@@ -1,0 +1,9 @@
+Important Notes:
+
+1. This code has been modified because the original code cannot be compiled.
+
+2. Install ffmpeg BEFORE install OpenCV, otherwise you may encounter decoding issues.
+
+3. To compile the code: $ make 
+
+4. To test the code: $ ./release/DenseTrackStab ./test_sequences/person01_boxing_d1_uncomp.avi -W 10

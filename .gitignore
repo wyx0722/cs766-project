@@ -1,0 +1,16 @@
+
+improved_trajectory_release/.build_release/DenseTrackStab.d
+
+improved_trajectory_release/.build_release/DenseTrackStab.l
+
+improved_trajectory_release/.build_release/DenseTrackStab.o
+
+*.d
+
+*.l
+
+*.o
+
+improved_trajectory_release/release/DenseTrackStab
+
+improved_trajectory_release/release/Video
