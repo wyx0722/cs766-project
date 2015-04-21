@@ -4,6 +4,8 @@ Important Notes:
 
 2. Install ffmpeg BEFORE install OpenCV, otherwise you may encounter decoding issues.
 
-3. To compile the code: $ make 
+3. There may be some dependencies for ffmpeg, such as yasm (http://yasm.tortall.net), pkg-config(http://www.freedesktop.org/wiki/Software/pkg-config/). Make sure you install ffmpeg successfully.
 
-4. To test the code: $ ./release/DenseTrackStab ./test_sequences/person01_boxing_d1_uncomp.avi -W 10
+4. To compile the code: $ make 
+
+5. To test the code: $ ./release/DenseTrackStab ./test_sequences/person01_boxing_d1_uncomp.avi -W 10
