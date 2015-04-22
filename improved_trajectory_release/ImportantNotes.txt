@@ -9,3 +9,5 @@ Important Notes:
 4. To compile the code: $ make 
 
 5. To test the code: $ ./release/DenseTrackStab ./test_sequences/person01_boxing_d1_uncomp.avi -W 10
+
+6. FOR 64-bit LINUX PROBLEMS (follow this guide): http://www.ozbotz.org/opencv-installation/
