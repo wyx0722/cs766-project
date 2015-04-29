@@ -9,27 +9,28 @@
 % O(xi,yi) = optical flow at pixel (xi,yi)
 % Oave(xi,yi) = average optical flow at pixel (xi,yi)
 
-% parameters
-tau=1;
-numfiles = length(labels);
-%numfiles=6;  % for debugging use small number of files
-frames_per_clip=16;
-k_nearest_points=5;
-temporal_range=2; % how many frames on either side of the current frame are included in tghe ca
-
 % trajectories is a cell array with 1 entry for each file - these files 
 % represent trajectories pulled from a sequence of 15 frames of the video.
 % each cell contains a 3d matrix the rows represent the individual 
 % trajectories, the columns represent the x or y positions for the
 % corresponding frames and the thrid dimension is either a 1 or a 2
 % corresponding to either the x or y coordinate.
-load('labels.mat', 'labels');
+load('features/UMN/labels.mat', 'labels');
 
 % labels is a 510x2 matrix each row represents one of the files the first
 % column has either a -1 or a 1.  -1 represents normal behavior while +1 
 % represents abnormal behavior and the second column represents which
 % video this data comes from.
-load('trajectories.mat', 'trajectories');
+load('features/UMN/trajectories.mat', 'trajectories');
+
+% parameters
+tau=1;
+numfiles = length(labels);
+numfiles=6;  % for debugging use small number of files
+frames_per_clip=16;
+k_nearest_points=5;
+temporal_range=2; % how many frames on either side of the current frame are included
+
 
 % compute desired particle velocity, viq, assume pi=0 (no panic)
 viq = cell(numfiles,1);  
