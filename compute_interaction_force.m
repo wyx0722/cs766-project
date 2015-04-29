@@ -99,3 +99,22 @@ parfor i=1:numfiles
 end
 
 
+% compute magnitude of interaction force vectors at particle positions
+% Force_Flow, Sf, is described in the paper as having the same resolution
+% as the image.  Here I'm just calculating the magnitude of the force at
+% the location of the corresponding particle trajectory
+% Sf will be a cell array with a cell for each file where each cell entry 
+% is a matrix with dimension 1 corresponding to particles, dimension 2
+% corresponding to frame and dimension 3 indicating 1=x position, 2=y
+% position, 3=magnitude of force
+Sf=cell(numfiles,1);
+parfor i=1:numfiles
+    trajectory=trajectories{i};
+    f=f_int{i}
+    temp = trajectory(:,1:frames_per_clip-2,:);
+    fx2=f(:,:,1).*f(:,:,1);
+    fy2=f(:,:,2).*f(:,:,2);
+    temp(:,:,3)=(fx2+fy2).^(0.5);
+    Sf{i}=temp
+end
+
