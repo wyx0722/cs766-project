@@ -23,10 +23,13 @@ load('features/UMN/labels.mat', 'labels');
 % video this data comes from.
 load('features/UMN/trajectories.mat', 'trajectories');
 
+% the data structures for the velocities, vi and viq, and the acceleration,
+% ai follow the same structure as used by trajectories
+
 % parameters
 tau=1;
 numfiles = length(labels);
-numfiles=6;  % for debugging use small number of files
+%numfiles=6;  % for debugging use small number of files
 frames_per_clip=16;
 k_nearest_points=5;
 temporal_range=2; % how many frames on either side of the current frame are included
@@ -85,6 +88,14 @@ parfor i=1:numfiles
     vi{i}=vi_holder;
 end
 
-
+% compute interaction force, f_int
+    % assume m=1 like in the paper
+    % using tau = 1 as set at the top in parameters section
+f_int=cell(numfiles,1);
+parfor i=1:numfiles
+    temp=viq{i}-vi{i};
+    temp=temp(:,1:frames_per_clip-2,:)./tau
+    f_int{i}=temp-ai{i};
+end
 
 
