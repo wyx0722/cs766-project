@@ -24,9 +24,10 @@ int main(int argc, char** argv) {
     int state = 0;
     int current_frame = 0;
     int current_index = 1;
-    FILE* o = stdout;
+    char index_str[5];
     while (true) {
-        string out_filename = string(argv[2]) + "_" + to_string(current_index) + ".txt";
+        sprintf(index_str, "%04d", current_index);
+        string out_filename = string(argv[2]) + "_" + index_str + ".txt";
         FILE* out = freopen(out_filename.c_str(), "w", stdout);
         if (!out) {
             printf("Cannot open file.\n");
@@ -38,7 +39,6 @@ int main(int argc, char** argv) {
         state = DenseTrack(fake_argc, fake_argv);
         
         fclose(out);
-        stdout = o;
         
         if (state) {
             remove(out_filename.c_str());
