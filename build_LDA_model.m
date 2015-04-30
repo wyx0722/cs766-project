@@ -13,9 +13,9 @@
 %
 % NOTE: to use this model to get the logprob of a clip falling into it, call:
 %
-%    addpath('fastlda/')
-%    [~,~,logProb] = applyFastlda(TEST, alpha, beta); % TEST is 1 x D
-%    rmpath('fastlda/')
+%    addpath('fastlda')
+%    [~,perplexity,logProb] = applyFastlda(TEST, alpha, beta); % TEST is 1 x D
+%    rmpath('fastlda')
 %
 function [alpha, beta] = build_LDA_model(data, C, L)
 
@@ -32,10 +32,10 @@ oldBeta = rand(L,D);
 oldBeta = oldBeta ./ (sum(oldBeta,2)*ones(1,D));
 lap = 0.0001;
 
-addpath('fastlda/')
+addpath('fastlda')
 
 [alpha, beta, ~, ~, ~] = learnFastlda(training_data,oldAlpha,oldBeta,lap);
 
-rmpath('fastlda/')
+rmpath('fastlda')
 
 end
