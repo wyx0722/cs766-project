@@ -14,3 +14,5 @@ improved_trajectory_release/.build_release/DenseTrackStab.o
 improved_trajectory_release/release/DenseTrackStab
 
 improved_trajectory_release/release/Video
+
+test.m

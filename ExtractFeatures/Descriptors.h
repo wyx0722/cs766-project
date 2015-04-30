@@ -176,8 +176,8 @@ bool IsValid(std::vector<Point2f>& track, float& mean_x, float& mean_y, float& v
 
 	float cur_max = 0;
 	for(int i = 0; i < size-1; i++) {
-        Point2f offset = track[i+1] - track[i];
-        float temp = sqrt(offset.x*offset.x + offset.y*offset.y);
+		track[i] = track[i+1] - track[i];
+		float temp = sqrt(track[i].x*track[i].x + track[i].y*track[i].y);
 
 		length += temp;
 		if(temp > cur_max)
@@ -186,6 +186,8 @@ bool IsValid(std::vector<Point2f>& track, float& mean_x, float& mean_y, float& v
 
 	if(cur_max > max_dis && cur_max > length*0.7)
 		return false;
+
+	track.pop_back();
 
     return true;
 }

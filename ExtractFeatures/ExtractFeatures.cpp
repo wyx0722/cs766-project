@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     char start_frame[20];
     char end_frame[20];
     
-    const int fake_argc = 9;
+    const int fake_argc = 11;
     char *fake_argv[fake_argc];
     fake_argv[0] = argv[1];
     fake_argv[1] = (char*)"-S";
@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
     fake_argv[6] = (char*)"15";
     fake_argv[7] = (char*)"-W";
     fake_argv[8] = (char*)"5";
+    fake_argv[9] = (char*)"-A";
+    fake_argv[10] = (char*)"1";
     
     int state = 0;
     int current_frame = 0;

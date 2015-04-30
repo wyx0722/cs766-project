@@ -191,9 +191,9 @@ int DenseTrack(int argc, char** argv)
                         
                         // output the trajectory
                         for (int i = 0; i < trajectory.size(); ++i)
-                            printf("%f\t", trajectory[i].x/float(seqInfo.width));
+                            printf("%f\t", trajectory[i].x);
                         for (int i = 0; i < trajectory.size(); ++i)
-                            printf("%f\t", trajectory[i].y/float(seqInfo.height));
+                            printf("%f\t", trajectory[i].y);
                         
                         PrintDesc(iTrack->hog, hogInfo, trackInfo);
                         PrintDesc(iTrack->hof, hofInfo, trackInfo);

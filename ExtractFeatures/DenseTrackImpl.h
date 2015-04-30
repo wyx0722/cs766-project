@@ -37,7 +37,7 @@ int init_gap = 1;
 int track_length = 15;
 
 // parameters for rejecting trajectory
-const float min_var = sqrt(3);
+const float min_var = 0.5; //sqrt(3);
 const float max_var = 50;
 const float max_dis = 20;
 
