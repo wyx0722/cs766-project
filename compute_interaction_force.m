@@ -1,3 +1,4 @@
+function [labels, trajectories, vi, viq, ai, f_int, Sf] = compute_interaction_force()
 % compute interaction force
 
 % from the social force paper they use
