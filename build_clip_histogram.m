@@ -1,6 +1,8 @@
-%% use this function to convert a video clip's raw features into hist gram that is usable in LDA
+%% use this function to convert a set of video clips' raw features into histograms that are usable
 % INPUTS:
-% clipFeatureMatrix is the F x D feature matrix for the video
+% clipFeatureMatrix is a V length cell array where V{i} is a 2-d matrix of F  features, 
+%       by D feature dimensions for video i. D should be equal for all i,
+%       while F can be different!
 % codebook is the C x D dictionary
 % type is either 'vq' or 'llc'
 %
@@ -8,9 +10,14 @@
 % hist is the 1 x C clip histogram
 
 % this probably didn't need its own function....
-function [hist] = build_clip_histogram(clipFeatureMatrix, codebook, type)
+function [final_matrix] = build_clip_histogram(clipData, codebook, type)
+V = length(clipData);
+[C, D] = size(codebook);
+
+final_matrix = nan(V,C);
+for clip = 1:V
+    clipFeatureMatrix = clipData{clip};
     [F, D] = size(clipFeatureMatrix);
-    [C, D] = size(codebook);
 
     data = zeros(F,C);
     hist = nan(1,C);
@@ -48,5 +55,7 @@ function [hist] = build_clip_histogram(clipFeatureMatrix, codebook, type)
     else
         error('Valid types are vq or llc');
     end
-
+    
+    final_matrix(clip,:) = hist(1,:);
+end
 end

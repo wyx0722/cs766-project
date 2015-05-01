@@ -1,27 +1,22 @@
-%% Trains Latent Dirichlet Allocation model for normal video clips
+%% LDA Classifier
+% Trains Latent Dirichlet Allocation model for normal video clips then classifies test data
 %
 % Input: 
-%    data: V length cell array where V{i} is a 2-d matrix of F  features, 
-%       by D feature dimensions for video i. D should be equal for all i,
-%       while F can be different!
-%    codebook: C x D matrix for the dictionary
+%    train_data: a 2-d matrix of V training clips by C (codebook size) words
+%    testing_data: a 2-d matrix of V testing clips by C (codebook size) words
 %    L: is the number of topics
-%    codingType: should be 'vq' or 'llc'
 %
 % Output: 
 %    alpha: parameter of Dirichlet distribution
 %    beta: parameters for topic distributions
 %
-function [alpha, beta] = build_LDA_model(data, codebook, L, codingType)
+function [predicted_labels] = build_LDA_model(train_data, testing_data, L)
 
-V = length(data);
-[C, D] = size(codebook)
+[V_train, ~] = size(train_data);
+[V_test, C] = size(testing_data);
 
-training_data = nan(V, C);
-for i = 1:V
-    training_data(i,:) = build_clip_histogram(data{i}, codebook, codingType);
-end
+% Run LDA estimation on training (need to adjust to use lda-c)
 
-% Run LDA (need to adjust to use lda-c)
+% Run LDA inference on test data
 
 end
