@@ -1,0 +1,15 @@
+%% Builds codebook
+%
+% Input: 
+%    data: F x D matrix where F is the number of features for all training 
+% clips and D is the dimensionality of the features (how many features)
+%    C: codebook size
+%
+% Output: 
+%    codebook: C x D dictionary matrix
+%
+function [codebook] = build_codebook(data, C, attempts)
+
+[~, codebook] = kmeans(data,C,'Replicates', 5); % try 5 times with different centers
+
+end

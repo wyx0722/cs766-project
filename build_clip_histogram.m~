@@ -20,7 +20,7 @@ function [hist] = build_clip_histogram(clipFeatureMatrix, codebook, type)
         subdict_ind = knnsearch(codebook,clipFeatureMatrix,'K',k);
         for i = 1:F
             curr_subdict_ind = subdict_ind(i,:);
-            data(i,curr_subdict_ind) = 1.0; % single neighbor per row
+            data(i,curr_subdict_ind) = 1.0;
         end
         
         hist(:) = sum(data);

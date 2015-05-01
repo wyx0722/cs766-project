@@ -19,9 +19,9 @@ V = length(data);
 
 training_data = nan(V, C);
 for i = 1:V
-    training_data(i,:) = build_clip_histogram(data{i}, codebook, codingType);
+    training_data(i,:) = build_clip_histogram(data{i), codebook, codingType);
 end
 
-% Run LDA (need to adjust to use lda-c)
+% Run LDA
 
 end
