@@ -25,21 +25,25 @@ formatSpec = ' %i:%f';
 
 train_file = fopen(training_filename,'w');
 for train_doc = 1:V_train
-    fprintf(train_file, '%i', C); % 1st number
-    fprintf(train_file, formatSpec, [word_ind; train_data(train_doc,:)]); % data
+    non_zero_ind = (train_data(train_doc,:) > 0);
+    non_zero_sum = sum(non_zero_ind);
+    fprintf(train_file, '%i', non_zero_sum); % 1st number
+    fprintf(train_file, formatSpec, [word_ind(non_zero_ind); train_data(train_doc,non_zero_ind)]); % data
     fprintf(train_file, '\n'); % endline
 end
 fclose(train_file);
 
 test_file = fopen(testing_filename,'w');
 for test_doc = 1:V_test
-    fprintf(test_file, '%i', C); % 1st number
-    fprintf(test_file, formatSpec, [word_ind; testing_data(test_doc,:)]); % data
+    non_zero_ind = (testing_data(test_doc,:) > 0);
+    non_zero_sum = sum(non_zero_ind);
+    fprintf(test_file, '%i', non_zero_sum); % 1st number
+    fprintf(test_file, formatSpec, [word_ind(non_zero_ind); testing_data(test_doc,non_zero_ind)]); % data
     fprintf(test_file, '\n'); % endline
 end
 fclose(test_file);
 
-run_string = ['./lda-c/build/lda est estimate ' num2str(L) ' lda-c/settings.txt ' training_filename ' random lda-c/model/'];
+run_string = ['./lda-c/build/lda est 0.75 ' num2str(L) ' lda-c/settings.txt ' training_filename ' random lda-c/model/'];
 s = system(run_string);
 
 % Run LDA inference on test data
