@@ -21,7 +21,7 @@ function [predicted_labels] = build_LDA_model(train_data, testing_data, L)
 training_filename = 'lda-c/model/training_data.dat';
 testing_filename = 'lda-c/model/testing_data.dat';
 word_ind = 1:C;
-formatSpec = ' %i:%f';
+formatSpec = ' %i:%i';
 
 train_file = fopen(training_filename,'w');
 for train_doc = 1:V_train
@@ -43,9 +43,11 @@ for test_doc = 1:V_test
 end
 fclose(test_file);
 
-run_string = ['./lda-c/build/lda est 0.75 ' num2str(L) ' lda-c/settings.txt ' training_filename ' random lda-c/model/'];
-s = system(run_string);
+% build model
+est_string = ['./lda-c/build/lda est 0.75 ' num2str(L) ' lda-c/settings.txt ' training_filename ' random lda-c/model/'];
+s = system(est_string);
 
 % Run LDA inference on test data
-
+inf_string = ['./lda-c/build/lda inf lda-c/inf-settings.txt lda-c/model/final ' testing_filename ' lda-c/model/ESTIMATE'];
+s = system(inf_string);
 end
