@@ -1,5 +1,5 @@
 clear
-videoDirectoy = '/media/Data/School/CS766/Final Project/data/features/UMN/';
+videoDirectoy = 'D:\School\CS766\Final Project\data\features\UMN\';
 videos = {'01', '02', '03', '04', '05', '06',...
     '07', '08', '09', '10', '11'};
 transitions = [32, 45, 20, 37, 33, 30,...
@@ -8,10 +8,10 @@ num_videos = length(videos);
 
 % indices to split up rows in raw files
 genInfoIndices = 2:10; % leave out frameNum
-denseTrajIndices = 11:42;
-HOGIndices = 43:138;
-HOFIndices = 139:246;
-MBHIndices = 247:438;
+denseTrajIndices = 11:40;
+HOGIndices = 41:136;
+HOFIndices = 137:244;
+MBHIndices = 245:436;
 
 % store everything in a giant data file
 clip_raw_features.clipIndexInfo = {}; % [video #, clip #]
