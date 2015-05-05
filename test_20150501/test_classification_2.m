@@ -13,7 +13,7 @@ load('features');
 
 %% train one-class SVM
 addpath('../libsvm-3.20/matlab/');
-model = svmtrain(double(labels_train), features_train, '-s 2 -t 0');
+model = svmtrain(double(labels_train), features_train, '-s 2 -t 1');
 [predict_labels, ~, dec_values] = svmpredict(double(labels), features, model);
 %predict_labels = sign(predict_labels);
 norm_dec_values = mat2gray(dec_values);
