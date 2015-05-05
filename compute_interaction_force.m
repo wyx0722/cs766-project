@@ -1,4 +1,4 @@
-function [labels, trajectories, vi, viq, ai, f_int, Sf] = compute_interaction_force()
+function [vi, viq, ai, f_int, Sf] = compute_interaction_force(videoDirectoy)
 % compute interaction force
 
 % from the social force paper they use
@@ -16,13 +16,13 @@ function [labels, trajectories, vi, viq, ai, f_int, Sf] = compute_interaction_fo
 % trajectories, the columns represent the x or y positions for the
 % corresponding frames and the thrid dimension is either a 1 or a 2
 % corresponding to either the x or y coordinate.
-load('features/UMN/labels.mat', 'labels');
+load([videoDirectoy 'labels.mat'], 'labels');
 
 % labels is a 510x2 matrix each row represents one of the files the first
 % column has either a -1 or a 1.  -1 represents normal behavior while +1 
 % represents abnormal behavior and the second column represents which
 % video this data comes from.
-load('features/UMN/trajectories.mat', 'trajectories');
+load([videoDirectoy 'trajectories.mat'], 'trajectories');
 
 % the data structures for the velocities, vi and viq, and the acceleration,
 % ai follow the same structure as used by trajectories
