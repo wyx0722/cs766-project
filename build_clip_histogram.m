@@ -24,7 +24,7 @@ for clip = 1:V
     
     if strcmp(type,'vq')
         k = 1;
-        subdict_ind = knnsearch(codebook,clipFeatureMatrix,'K',k);
+        subdict_ind = knnsearch(codebook,clipFeatureMatrix,'K',k, 'Distance', 'seuclidean');
         for i = 1:F
             curr_subdict_ind = subdict_ind(i,:);
             data(i,curr_subdict_ind) = 1.0; % single neighbor per row

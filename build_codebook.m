@@ -19,6 +19,10 @@ for i = 1:V
     all_features = [all_features; data{i}];
 end
 
-[~, codebook] = kmeans(all_features, C,'Replicates', attempts); % try x times with different centers
+options = statset('kmeans');
+options.Display = 'iter';
+options.MaxIter = 1000;
+options.UseParallel = true;
+[~, codebook] = kmeans(all_features, C,'Replicates', attempts, 'MaxIter', 1000, 'Options', options); % try x times with different centers
 
 end
