@@ -44,8 +44,8 @@ for clip = 1:V
 
             %solve LLC for xi
             B_1x = curr_subdict - one_vec * curr_feature;
-            C = B_1x * B_1x';
-            c_hat = C \ one_vec;
+            C_i = B_1x * B_1x';
+            c_hat = C_i \ one_vec;
             c_hat = c_hat / sum(c_hat);
 
             data(i,curr_subdict_ind) = c_hat';

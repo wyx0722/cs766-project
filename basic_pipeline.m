@@ -110,7 +110,7 @@ if exist([experiment_directoy 'training_hists.mat'], 'file') == 2
     load([experiment_directoy 'training_hists.mat']);
     load([experiment_directoy 'testing_hists.mat']);
 else
-    coding_type = valid_coding_types{2};
+    coding_type = valid_coding_types{1};
     training_hists = build_clip_histogram(training, codebook, coding_type);
     testing_hists = build_clip_histogram(testing, codebook, coding_type);
     clear valid_coding_types coding_type testing training
@@ -120,7 +120,7 @@ end
 
 %% Build model and classify (basic wrapper function done... can add more types!)
 % this could be one-class SVM, LDA , etc
-valid_classifier_types = {'1classSVMOnly_Linear','1classSVMOnly_Gauss'}; %(add more to wrapper function)
-classifier_type = valid_classifier_types(1);
+valid_classifier_types = {'1classSVMOnly_Linear','1classSVMOnly_Poly','1classSVMOnly_Gauss'}; %(add more to wrapper function)
+classifier_type = valid_classifier_types(3);
 [accuracy, ROC_area, predicted_labels, est_values] = run_classifier(training_hists, labels_training, testing_hists, labels, classifier_type);
 

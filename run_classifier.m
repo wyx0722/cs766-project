@@ -20,6 +20,13 @@ function [accuracy, ROC_area, predicted_labels, est_values] = run_classifier(tra
         norm_dec_values = mat2gray(est_values);
         accuracy = acc(1);
         rmpath('libsvm-3.20/matlab/');
+    elseif strcmp(classifier_type,'1classSVMOnly_Poly')
+        addpath('libsvm-3.20/matlab/');
+        model = svmtrain(double(training_labels), training_hists, '-s 2 -t 1');
+        [predicted_labels, acc, est_values] = svmpredict(double(testing_labels), testing_hists, model);
+        norm_dec_values = mat2gray(est_values);
+        accuracy = acc(1);
+        rmpath('libsvm-3.20/matlab/');
     elseif strcmp(classifier_type,'1classSVMOnly_Gauss')
         addpath('libsvm-3.20/matlab/');
         model = svmtrain(double(training_labels), training_hists, '-s 2 -t 2');
