@@ -20,9 +20,11 @@ norm_dec_values = mat2gray(dec_values);
 rmpath('../libsvm-3.20/matlab/');
 
 %% plot ROC curve
-roc_labels = (labels==1)';
-roc_predict_labels = norm_dec_values';
+roc_labels = (labels==-1)';
+roc_predict_labels = 1 - norm_dec_values';
 plotroc(roc_labels, roc_predict_labels);
+ylabel('True Abnormal Rate');
+xlabel('False Abnormal Rate');
 [tpr,fpr,thresholds] = roc(roc_labels, roc_predict_labels);
 area = 0;
 for i = 1 : length(fpr) - 1
