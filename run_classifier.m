@@ -43,9 +43,11 @@ function [accuracy, ROC_area, predicted_labels, est_values] = run_classifier(tra
     end
     
     %% plot ROC curve
-    roc_labels = (testing_labels==1)';
-    roc_predict_labels = norm_dec_values';
+    roc_labels = (testing_labels==-1)';
+    roc_predict_labels = 1 - norm_dec_values';
     plotroc(roc_labels, roc_predict_labels);
+    ylabel('True Abnormal Rate');
+    xlabel('False Abnormal Rate');
     [tpr,fpr,~] = roc(roc_labels, roc_predict_labels);
     ROC_area = 0;
     for i = 1 : length(fpr) - 1
