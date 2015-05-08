@@ -16,11 +16,11 @@ addpath('../libsvm-3.20/matlab/');
 model = svmtrain(double(labels_train), features_train, '-s 2 -t 2');
 [predict_labels, ~, dec_values] = svmpredict(double(labels), features, model);
 %predict_labels = sign(predict_labels);
-norm_dec_values = mat2gray(dec_values);
+norm_dec_values = 1 - mat2gray(dec_values);
 rmpath('../libsvm-3.20/matlab/');
 
 %% plot ROC curve
-roc_labels = (labels==1)';
+roc_labels = (labels==-1)';
 roc_predict_labels = norm_dec_values';
 plotroc(roc_labels, roc_predict_labels);
 [tpr,fpr,thresholds] = roc(roc_labels, roc_predict_labels);
