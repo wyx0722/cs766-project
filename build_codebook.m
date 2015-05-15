@@ -21,8 +21,8 @@ end
 
 options = statset('kmeans');
 options.Display = 'iter';
-options.MaxIter = 1000;
+options.MaxIter = 200;
 options.UseParallel = true;
-[~, codebook] = kmeans(all_features, C, 'Replicates', attempts, 'Display', 'iter', 'MaxIter', 1000, 'Options', options); % try x times with different centers
+[~, codebook] = kmeans(all_features, C, 'Replicates', attempts, 'Display', 'iter', 'MaxIter', 200, 'Options', options); % try x times with different centers
 
 end

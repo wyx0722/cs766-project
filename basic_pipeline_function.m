@@ -4,12 +4,15 @@
 %    experiment_name: name for experiment specific output directory
 %    experiment_directory_base: name for base output directory
 %    params: options to use (see comments in 'Check parameters')
-function [accuracy, ROC_area, predicted_labels, est_values] = basic_pipeline_function(datafile, experiment_name, experiment_directory_base, params)
+function [accuracy, ROC_area, predicted_labels, est_values, full_string] = basic_pipeline_function(datafile, experiment_name, experiment_directory_base, params)
 
 common_directory = [experiment_directory_base 'common/'];
-experiment_directory = [experiment_directory_base experiment_name];
+experiment_directory = [experiment_directory_base experiment_name '/'];
 
 % Create the folder if it doesn't exist already.
+if ~exist(experiment_directory_base, 'dir')
+	mkdir(experiment_directory_base);
+end
 if ~exist(experiment_directory, 'dir')
 	mkdir(experiment_directory);
 end
@@ -22,7 +25,8 @@ end
 % grab data from open-cv, social force, etc.
 
 % ASSUMES THE EXISTENCE OF all_features.mat
-clip_raw_features = load(datafile);
+disp('...loading data...');
+load(datafile);
 
 %% Check parameters
 if(~exist('params','var'))
@@ -94,35 +98,46 @@ end
 
 %% build iterator from options for loops
 feature_to_use = {};
+full_string = '';
 if params.use_DenseTraj
     feature_to_use{end+1} = 'DT';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_HOF
     feature_to_use{end+1} = 'HOF';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_HOG
     feature_to_use{end+1} = 'HOG';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_MBH
     feature_to_use{end+1} = 'MBH';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_SocialForce_Mike
     feature_to_use{end+1} = 'SFM';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_DesiredVelocity
     feature_to_use{end+1} = 'DVel';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_DesiredVelocityMag
     feature_to_use{end+1} = 'DVelMag';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_ActualVelocity
     feature_to_use{end+1} = 'AVel';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 if params.use_ActualVelocityMag
     feature_to_use{end+1} = 'AVelMag';
+    full_string = [full_string '_' feature_to_use{end}];
 end
 
 %% Setup training/testing masks
+disp('...building training mask...');
 labels = cell2mat(clip_raw_features.labels)';
 
 % pick 5 random videos for training
@@ -134,16 +149,21 @@ end
 
 % train mask
 if exist([common_directory 'train_mask.mat'], 'file') == 2
-    train_mask = load([common_directory 'train_mask.mat']);
+    load([common_directory 'train_mask.mat']);
 else
-	random_videos = [];
-	train_mask = []
-	if(~isfield(params,'specific_train_videos'))
-		random_videos = params.specific_train_videos;
-		train_mask = (labels==1) & ( (indices==random_videos(1)) | (indices==random_videos(2))...
-         | (indices==random_videos(3)) | (indices==random_videos(4))  | (indices==random_videos(5))  );
+	train_mask = [];
+	if(isfield(params,'specific_train_videos'))
+		videos = params.specific_train_videos;
+		train_mask = (labels==1) & ( (indices==videos(1)) | (indices==videos(2))...
+         | (indices==videos(3)) | (indices==videos(4))  | (indices==videos(5))  );
 	else
 		% FINISH!!!!!!
+        all_ind = 1:length(labels);
+        pos_ind = all_ind(labels==1);
+        shuffle = pos_ind(randperm(length(pos_ind)));
+        shuffle = shuffle(1:round(length(pos_ind)/2)); %50 of positive example for testing
+        train_mask = false(size(labels));
+        train_mask(shuffle) = true;
 	end
 
     save([common_directory 'train_mask.mat'],'train_mask');
@@ -154,16 +174,17 @@ clear indices random_videos numVideos
 labels_training = labels(train_mask);
 
 %% Build codebooks and feature matrices
+disp('...building codebook and histogram (this may take time)...');
 testing_hists = [];
 if exist([experiment_directory 'testing_hists.mat'], 'file') == 2
-    testing_hists = load([experiment_directory 'testing_hists.mat']);
+    load([experiment_directory 'testing_hists.mat']);
 else
     for i = 1:length(feature_to_use)
 		% hist
 		hist_name = ['hist_' feature_to_use{i} '.mat'];
 		this_hist = [];
         if exist([common_directory hist_name], 'file') == 2
-            this_hist = load([common_directory hist_name]);
+            load([common_directory hist_name]);
         else
 			%data
 			this_data = {};
@@ -198,7 +219,7 @@ else
 			codebook_name = ['codebook_' feature_to_use{i} '.mat'];
 			this_codebook = [];
 			if exist([common_directory codebook_name], 'file') == 2
-				this_codebook = load([common_directory codebook_name]);
+				load([common_directory codebook_name]);
 			else
 				this_training = this_data(train_mask);
 				this_codebook = build_codebook(this_training, params.C, params.attempts);
@@ -220,4 +241,6 @@ clear train_mask
 
 %% Build model and classify (basic wrapper function done... can add more types!)
 % this could be one-class SVM, LDA , etc
+disp('...classifying...');
 [accuracy, ROC_area, predicted_labels, est_values] = run_classifier(training_hists, labels_training, testing_hists, labels, params.classifier_type);
+clear training_hists labels_training labels testing_hists

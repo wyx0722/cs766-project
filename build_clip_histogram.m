@@ -22,14 +22,14 @@ for clip = 1:V
     
     if strcmp(type,'vq')
         k = 1;
-        subdict_ind = knnsearch(codebook,clipFeatureMatrix,'K',k, 'Distance', 'seuclidean');
+        subdict_ind = knnsearch(codebook,clipFeatureMatrix,'K',k);
         for i = 1:F
             curr_subdict_ind = subdict_ind(i,:);
             data(i,curr_subdict_ind) = 1.0; % single neighbor per row
         end
         
         hist(:) = sum(data);
-        hist(:) = norm( hist(:), 1 ); % l1 norm
+        hist(:) = hist(:) ./ norm( hist(:), 1 ); % l1 norm
     elseif strcmp(type,'llc')
         k = 5;
         
@@ -51,7 +51,7 @@ for clip = 1:V
         end
         
         hist(:) = max(data);
-        hist(:) = norm( hist(:), 1 ); % l1 norm
+        hist(:) = hist(:) ./ norm( hist(:), 1 ); % l1 norm
     else
         error('Valid types are vq or llc');
     end
