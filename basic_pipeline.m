@@ -1,6 +1,6 @@
 clear
 %% Basic pipeline
-experiment_directoy = 'test_20150505_2_sf_only/';
+experiment_directoy = 'test_20150506_mbh_only/';
 % Create the folder if it doesn't exist already.
 if ~exist(experiment_directoy, 'dir')
 	mkdir(experiment_directoy);
@@ -23,8 +23,8 @@ load('all_features');
 use_DenseTraj = 0;
 use_HOF = 0;
 use_HOG = 0;
-use_MBH = 0;
-use_SocialForce = 1;
+use_MBH = 1;
+use_SocialForce = 0;
 
 if exist([experiment_directoy 'data.mat'], 'file') == 2
     load([experiment_directoy 'data.mat']);

@@ -8,8 +8,6 @@
 %
 % OUTPUTS
 % hist is the 1 x C clip histogram
-
-% this probably didn't need its own function....
 function [final_matrix] = build_clip_histogram(clipData, codebook, type)
 V = length(clipData);
 [C, D] = size(codebook);
@@ -31,6 +29,7 @@ for clip = 1:V
         end
         
         hist(:) = sum(data);
+        hist(:) = norm( hist(:), 1 ); % l1 norm
     elseif strcmp(type,'llc')
         k = 5;
         
@@ -52,6 +51,7 @@ for clip = 1:V
         end
         
         hist(:) = max(data);
+        hist(:) = norm( hist(:), 1 ); % l1 norm
     else
         error('Valid types are vq or llc');
     end
