@@ -8,7 +8,11 @@ num_videos = length(videos);
 
 % indices to split up rows in raw files
 genInfoIndices = 2:10; % leave out frameNum
-denseTrajIndices = 11:42;
+dtX1 = 12:26;
+dtX2 = 11:25;
+dtY1 = 28:42;
+dtY2 = 27:41;
+%denseTrajIndices = 11:42;
 HOGIndices = 43:138;
 HOFIndices = 139:246;
 MBHIndices = 247:438;
@@ -22,11 +26,12 @@ clip_raw_features.HOG = {};
 clip_raw_features.HOF = {};
 clip_raw_features.MBH = {}; % 1:96 -> x, 97:192 -> y
 clip_raw_features.SocialForce_Mike = {};
-clip_raw_features.DesiredVelocity = {};
-clip_raw_features.DesiredVelocityMag = {};
-clip_raw_features.ActualVelocity = {};
-clip_raw_features.ActualVelocityMag = {};
-clip_raw_features.labels = {};
+clip_raw_features.SocialForce_Ke = {};
+%clip_raw_features.DesiredVelocity = {};
+%clip_raw_features.DesiredVelocityMag = {};
+%clip_raw_features.ActualVelocity = {};
+%clip_raw_features.ActualVelocityMag = {};
+%clip_raw_features.labels = {};
 
 labels = [];
 trajectories = {};
@@ -44,7 +49,7 @@ for i = 1 : num_videos
         
         clip_raw_features.rawFileNames{current_index} = files(j).name;
         clip_raw_features.generalInfo{current_index} = temp_clip(:,genInfoIndices); % i=video, j=clip
-        clip_raw_features.denseTrajectories{current_index} = temp_clip(:,denseTrajIndices);
+        clip_raw_features.denseTrajectories{current_index} = [(temp_clip(:,dtX1) - temp_clip(:,dtX2)), (temp_clip(:,dtY1) - temp_clip(:,dtY2))  ];
         clip_raw_features.HOG{current_index} = temp_clip(:,HOGIndices);
         clip_raw_features.HOF{current_index} = temp_clip(:,HOFIndices);
         clip_raw_features.MBH{current_index} = temp_clip(:,MBHIndices);
@@ -55,8 +60,8 @@ for i = 1 : num_videos
             clip_raw_features.labels{current_index} = -1; % abnormal is negative
         end
         labels = [labels; clip_raw_features.labels{current_index} i ];
-        trajectories{current_index}(:,:,1) = clip_raw_features.denseTrajectories{current_index}(:,1:16);
-        trajectories{current_index}(:,:,2) = clip_raw_features.denseTrajectories{current_index}(:,17:32);
+        trajectories{current_index}(:,:,1) = temp_clip(:,11:26);
+        trajectories{current_index}(:,:,2) = temp_clip(:,27:42);
         clear temp_clip
     end
     clear num_files files
@@ -65,13 +70,18 @@ end
 
 %social force comp
 [actualVel, desiredVel, ~, ~, Sf] = compute_interaction_force(videoDirectoy, trajectories, labels);
-clear labels trajectories
+clear labels
 for cInd = 1:length(clip_raw_features.labels)
     clip_raw_features.SocialForce_Mike{cInd} = Sf{cInd}(:,:,3);
-    clip_raw_features.DesiredVelocity{cInd} = [desiredVel{cInd}(:,:,1) desiredVel{cInd}(:,:,2)];
-    clip_raw_features.DesiredVelocityMag{cInd} = sqrt( (desiredVel{cInd}(:,:,1)).^2 + (desiredVel{cInd}(:,:,2)).^2 );
-    clip_raw_features.ActualVelocity{cInd} = [actualVel{cInd}(:,:,1) actualVel{cInd}(:,:,2)];
-    clip_raw_features.ActualVelocityMag{cInd} = sqrt( (actualVel{cInd}(:,:,1)).^2 + (actualVel{cInd}(:,:,2)).^2 );
+    %clip_raw_features.DesiredVelocity{cInd} = [desiredVel{cInd}(:,:,1) desiredVel{cInd}(:,:,2)];
+    %clip_raw_features.DesiredVelocityMag{cInd} = sqrt( (desiredVel{cInd}(:,:,1)).^2 + (desiredVel{cInd}(:,:,2)).^2 );
+    %clip_raw_features.ActualVelocity{cInd} = [actualVel{cInd}(:,:,1) actualVel{cInd}(:,:,2)];
+    %clip_raw_features.ActualVelocityMag{cInd} = sqrt( (actualVel{cInd}(:,:,1)).^2 + (actualVel{cInd}(:,:,2)).^2 );
+end
+
+tmp_ke = social_force_ke(trajectories);
+for keInd = 1:length(tmp_ke)
+    clip_raw_features.SocialForce_Ke{keInd} = sqrt(tmp_ke{keInd}(:, :, 1) .^ 2 + tmp_ke{keInd}(:, :, 2) .^ 2);
 end
 
 save('all_features.mat','clip_raw_features');

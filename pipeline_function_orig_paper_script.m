@@ -6,11 +6,12 @@ params.use_DenseTraj = 1;
 params.use_HOF = 0;
 params.use_HOG = 0;
 params.use_MBH = 0;
-params.use_SocialForce_Mike= 0;
-params.use_DesiredVelocity = 0;
-params.use_DesiredVelocityMag = 0;
-params.use_ActualVelocity = 0;
-params.use_ActualVelocityMag = 0;
+params.use_SocialForce_Mike = 0;
+params.use_SocialForce_Ke = 0;
+% params.use_DesiredVelocity = 0;
+% params.use_DesiredVelocityMag = 0;
+% params.use_ActualVelocity = 0;
+% params.use_ActualVelocityMag = 0;
 
 params.specific_train_videos = [4 5 6 7 8];
 
@@ -40,21 +41,26 @@ ALL_PARAMS{2} = p2;
 
 p3 = params;
 p3.use_DenseTraj = 0;
-p3.use_HOF = 1;
+p3.use_SocialForce_Ke = 1;
 ALL_PARAMS{3} = p3;
 
 p4 = params;
 p4.use_DenseTraj = 0;
-p4.use_HOG = 1;
+p4.use_HOF = 1;
 ALL_PARAMS{4} = p4;
 
 p5 = params;
 p5.use_DenseTraj = 0;
-p5.use_MBH = 1;
+p5.use_HOG = 1;
 ALL_PARAMS{5} = p5;
 
+p6 = params;
+p6.use_DenseTraj = 0;
+p6.use_MBH = 1;
+ALL_PARAMS{6} = p6;
+
 %% test all params
-tests = {'DT','SF_M','HOF','HOG','MBH'}; % names for tests using same training set
+tests = {'DT','SF_M','SF_K','HOF','HOG','MBH'}; % names for tests using same training set
 base_dir = 'FINAL TEST/';
 exp_name = 'same_training_videos_as_original_paper/'; % change when training mask changes
 exp_base_dir = [base_dir exp_name]

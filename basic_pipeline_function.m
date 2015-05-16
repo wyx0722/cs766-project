@@ -36,11 +36,12 @@ if(~exist('params','var'))
     params.use_HOF = 0;
     params.use_HOG = 0;
     params.use_MBH = 0;
-    params.use_SocialForce_Mike= 1;
-    params.use_DesiredVelocity = 0;
-    params.use_DesiredVelocityMag = 0;
-    params.use_ActualVelocity = 0;
-    params.use_ActualVelocityMag = 0;
+    params.use_SocialForce_Mike= 0;
+    params.use_SocialForce_Ke = 1;
+    %params.use_DesiredVelocity = 0;
+    %params.use_DesiredVelocityMag = 0;
+    %params.use_ActualVelocity = 0;
+    %params.use_ActualVelocityMag = 0;
     
     % Codebook parameters
     % C = codebook size
@@ -69,20 +70,23 @@ if(~isfield(params,'use_MBH'))
     params.use_MBH = 0;
 end
 if(~isfield(params,'use_SocialForce_Mike'))
-    params.use_SocialForce_Mike = 1;
+    params.use_SocialForce_Mike = 0;
 end
-if(~isfield(params,'use_DesiredVelocity'))
-    params.use_DesiredVelocity = 0;
+if(~isfield(params,'use_SocialForce_Ke'))
+    params.use_SocialForce_Ke = 1;
 end
-if(~isfield(params,'use_DesiredVelocityMag'))
-    params.use_DesiredVelocityMag = 0;
-end
-if(~isfield(params,'use_ActualVelocity'))
-    params.use_ActualVelocity = 0;
-end
-if(~isfield(params,'use_ActualVelocityMag'))
-    params.use_ActualVelocityMag = 0;
-end
+% if(~isfield(params,'use_DesiredVelocity'))
+%     params.use_DesiredVelocity = 0;
+% end
+% if(~isfield(params,'use_DesiredVelocityMag'))
+%     params.use_DesiredVelocityMag = 0;
+% end
+% if(~isfield(params,'use_ActualVelocity'))
+%     params.use_ActualVelocity = 0;
+% end
+% if(~isfield(params,'use_ActualVelocityMag'))
+%     params.use_ActualVelocityMag = 0;
+% end
 if(~isfield(params,'C'))
     params.C = 1024;
 end
@@ -119,22 +123,26 @@ if params.use_SocialForce_Mike
     feature_to_use{end+1} = 'SFM';
     full_string = [full_string '_' feature_to_use{end}];
 end
-if params.use_DesiredVelocity
-    feature_to_use{end+1} = 'DVel';
+if params.use_SocialForce_Ke
+    feature_to_use{end+1} = 'SFK';
     full_string = [full_string '_' feature_to_use{end}];
 end
-if params.use_DesiredVelocityMag
-    feature_to_use{end+1} = 'DVelMag';
-    full_string = [full_string '_' feature_to_use{end}];
-end
-if params.use_ActualVelocity
-    feature_to_use{end+1} = 'AVel';
-    full_string = [full_string '_' feature_to_use{end}];
-end
-if params.use_ActualVelocityMag
-    feature_to_use{end+1} = 'AVelMag';
-    full_string = [full_string '_' feature_to_use{end}];
-end
+% if params.use_DesiredVelocity
+%     feature_to_use{end+1} = 'DVel';
+%     full_string = [full_string '_' feature_to_use{end}];
+% end
+% if params.use_DesiredVelocityMag
+%     feature_to_use{end+1} = 'DVelMag';
+%     full_string = [full_string '_' feature_to_use{end}];
+% end
+% if params.use_ActualVelocity
+%     feature_to_use{end+1} = 'AVel';
+%     full_string = [full_string '_' feature_to_use{end}];
+% end
+% if params.use_ActualVelocityMag
+%     feature_to_use{end+1} = 'AVelMag';
+%     full_string = [full_string '_' feature_to_use{end}];
+% end
 
 %% Setup training/testing masks
 disp('...building training mask...');
@@ -156,8 +164,7 @@ else
 		videos = params.specific_train_videos;
 		train_mask = (labels==1) & ( (indices==videos(1)) | (indices==videos(2))...
          | (indices==videos(3)) | (indices==videos(4))  | (indices==videos(5))  );
-	else
-		% FINISH!!!!!!
+    else
         all_ind = 1:length(labels);
         pos_ind = all_ind(labels==1);
         shuffle = pos_ind(randperm(length(pos_ind)));
@@ -200,14 +207,16 @@ else
 					tmp_mat = clip_raw_features.MBH{video};
 				elseif strcmp(feature_to_use{i}, 'SFM')
 					tmp_mat = clip_raw_features.SocialForce_Mike{video};
-				elseif strcmp(feature_to_use{i}, 'DVel')
-					tmp_mat = clip_raw_features.DesiredVelocity{video};
-				elseif strcmp(feature_to_use{i}, 'DVelMag')
-					tmp_mat = clip_raw_features.DesiredVelocityMag{video};
-				elseif strcmp(feature_to_use{i}, 'AVel')
-					tmp_mat = clip_raw_features.ActualVelocity{video};
-				elseif strcmp(feature_to_use{i}, 'AVelMag')
-					tmp_mat = clip_raw_features.ActualVelocityMag{video};
+                elseif strcmp(feature_to_use{i}, 'SFK')
+					tmp_mat = clip_raw_features.SocialForce_Ke{video};
+% 				elseif strcmp(feature_to_use{i}, 'DVel')
+% 					tmp_mat = clip_raw_features.DesiredVelocity{video};
+% 				elseif strcmp(feature_to_use{i}, 'DVelMag')
+% 					tmp_mat = clip_raw_features.DesiredVelocityMag{video};
+% 				elseif strcmp(feature_to_use{i}, 'AVel')
+% 					tmp_mat = clip_raw_features.ActualVelocity{video};
+% 				elseif strcmp(feature_to_use{i}, 'AVelMag')
+% 					tmp_mat = clip_raw_features.ActualVelocityMag{video};
 				else
 					error('PROBLEM WITH feature_to_use VALUE!')
 				end
