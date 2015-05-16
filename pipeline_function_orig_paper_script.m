@@ -74,8 +74,9 @@ for this_test = 1:length(ALL_PARAMS)
     accuracies = [accuracies; accuracy];
     predicted_labels_ALL = [predicted_labels_ALL, predicted_labels];
     ROC_areas = [ROC_areas; ROC_area];
-    print(gcf,[exp_base_dir 'ROC_' tests{this_test}],'-dpng')
-    close(gcf);
+    h = gcf;
+    print(h,[exp_base_dir 'ROC_' tests{this_test}],'-dpng')
+    close(h); %close figure after save
     disp(['...END TEST ' num2str(this_test)])
 end
 results.tests = tests;
