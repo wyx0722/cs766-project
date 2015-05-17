@@ -90,6 +90,9 @@ text(5-0.25,ROC_areas(6)+0.013,num2str(ROC_areas(6)));
 
 hold off
 legend(feat_names);
+xlabel('Features');
+ylabel('Area');
+title('Average ROC Areas')
 
 %set(gca,'xticklabel', feat_names);
 set(gca,'xticklabel', {'','','','','',''});
@@ -112,8 +115,6 @@ plotroc(ROC_agg_labels, DT_est_val, feat_names{1}, ...
     ROC_agg_labels, HOG_est_val, feat_names{5}, ... 
     ROC_agg_labels, MBH_est_val, feat_names{6} );
 set(r,'Position',[100,100,800,600]);
-ylabel('True Abnormal Rate');
-xlabel('False Abnormal Rate');
 
 print(r,[base_dir 'aggregate_ROC_curves.png'], '-dpng');
 
