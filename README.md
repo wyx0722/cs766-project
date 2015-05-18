@@ -20,6 +20,10 @@ The raw datasets are not included to save space. The raw videos for our tests ca
 ## all_features.mat
 The script "make_full_feature_data.m" processes the dense trajectory output and combines all of the clip features into a single file called "all_features.mat". This file is over 600 MB large for the UMN dataset, so it cannot be hosted on github.
 
+## _old code_ and _old tests_ directories
+
+These directories contain early tests and prototype scripts. Some of the old tests have ROC curves that guided our decision making. **The code in these directories most likely will not run as the matrices used have been removed to save space. _The functionality of these was built into the main pipeline function, "basic_pipeline_function.m"._**
+
 ## Explanation of MATLAB scripts:
 
 * **_basic_pipeline_function.m_**: A function to capture the whole pipeline. This function performs a single run of our pipeline.
