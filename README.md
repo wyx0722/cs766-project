@@ -1,6 +1,11 @@
 # cs766-project
 Codebase for our CS 766 Final Project
 
+## Members
+* Ke Ma
+* Michael Doescher
+* Christopher Bodden
+
 ## Pipeline
 
 *The main function to run tests is "basic_pipeline_function.m".*
