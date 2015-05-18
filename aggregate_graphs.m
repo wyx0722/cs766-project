@@ -16,12 +16,12 @@ clear clip_raw_features labels agg_labels
 % aggregate results vars
 
 % ROC area
-DT_avg_ROC_area = 0;
-SFM_avg_ROC_area = 0;
-SFK_avg_ROC_area = 0;
-HOF_avg_ROC_area = 0;
-HOG_avg_ROC_area = 0;
-MBH_avg_ROC_area = 0;
+DT_avg_ROC_area = [];
+SFM_avg_ROC_area = [];
+SFK_avg_ROC_area = [];
+HOF_avg_ROC_area = [];
+HOG_avg_ROC_area = [];
+MBH_avg_ROC_area = [];
 
 % ROC curves
 DT_est_val = [];
@@ -36,12 +36,12 @@ for this_exp = 1:num_exp
     load([exp_base_dir 'results.mat']);
     
     % ROC area
-    DT_avg_ROC_area = DT_avg_ROC_area + results.roc_areas(1);
-    SFM_avg_ROC_area = SFM_avg_ROC_area + results.roc_areas(2);
-    SFK_avg_ROC_area = SFK_avg_ROC_area + results.roc_areas(3);
-    HOF_avg_ROC_area = HOF_avg_ROC_area + results.roc_areas(4);
-    HOG_avg_ROC_area = HOG_avg_ROC_area + results.roc_areas(5);
-    MBH_avg_ROC_area = MBH_avg_ROC_area + results.roc_areas(6);
+    DT_avg_ROC_area = [DT_avg_ROC_area, results.roc_areas(1)];
+    SFM_avg_ROC_area = [SFM_avg_ROC_area, results.roc_areas(2)];
+    SFK_avg_ROC_area = [SFK_avg_ROC_area, results.roc_areas(3)];
+    HOF_avg_ROC_area = [HOF_avg_ROC_area, results.roc_areas(4)];
+    HOG_avg_ROC_area = [HOG_avg_ROC_area, results.roc_areas(5)];
+    MBH_avg_ROC_area = [MBH_avg_ROC_area, results.roc_areas(6)];
     
     % ROC curve
     DT_est_val = [DT_est_val; results.est(:,1)];
@@ -56,14 +56,25 @@ clear this_exp exp_names
 
 %% finalize
 
+% ROC standard deviation
+format long
+
+DT_std_ROC_area = std(DT_avg_ROC_area);
+SFM_std_ROC_area = std(SFM_avg_ROC_area);
+SFK_std_ROC_area = std(SFK_avg_ROC_area);
+HOF_std_ROC_area = std(HOF_avg_ROC_area);
+HOG_std_ROC_area = std(HOG_avg_ROC_area);
+MBH_std_ROC_area = std(MBH_avg_ROC_area);
+ROC_std = [ DT_std_ROC_area, SFM_std_ROC_area, SFK_std_ROC_area, HOF_std_ROC_area, HOG_std_ROC_area, MBH_std_ROC_area ]
+
 % ROC area
-DT_avg_ROC_area = DT_avg_ROC_area ./ num_exp;
-SFM_avg_ROC_area = SFM_avg_ROC_area ./ num_exp;
-SFK_avg_ROC_area = SFK_avg_ROC_area ./ num_exp;
-HOF_avg_ROC_area = HOF_avg_ROC_area ./ num_exp;
-HOG_avg_ROC_area = HOG_avg_ROC_area ./ num_exp;
-MBH_avg_ROC_area = MBH_avg_ROC_area ./ num_exp;
-ROC_areas = [ DT_avg_ROC_area, SFM_avg_ROC_area, SFK_avg_ROC_area, HOF_avg_ROC_area, HOG_avg_ROC_area, MBH_avg_ROC_area ];
+DT_avg_ROC_area = sum(DT_avg_ROC_area) ./ num_exp;
+SFM_avg_ROC_area = sum(SFM_avg_ROC_area) ./ num_exp;
+SFK_avg_ROC_area = sum(SFK_avg_ROC_area) ./ num_exp;
+HOF_avg_ROC_area = sum(HOF_avg_ROC_area) ./ num_exp;
+HOG_avg_ROC_area = sum(HOG_avg_ROC_area) ./ num_exp;
+MBH_avg_ROC_area = sum(MBH_avg_ROC_area) ./ num_exp;
+ROC_areas = [ DT_avg_ROC_area, SFM_avg_ROC_area, SFK_avg_ROC_area, HOF_avg_ROC_area, HOG_avg_ROC_area, MBH_avg_ROC_area ]
 
 b = figure('Position',[100,100,800,600]);
 %bar(ROC_areas);
