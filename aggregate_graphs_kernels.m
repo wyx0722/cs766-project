@@ -145,7 +145,7 @@ kernel_names = {'linear', '3rd degree polynomial', 'radial basis'}
 legend(kernel_names);
 xlabel('Features');
 ylabel('Area');
-title('Average ROC Areas for Different Kernels')
+title('Average ROC Areas for Different Features and Kernels')
 
 set(gca,'xticklabel', feat_names);
 %set(gca,'xticklabel', {'','','','','',''});
